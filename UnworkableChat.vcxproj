@@ -130,9 +130,11 @@
     <ClCompile Include="Commads.cpp" />
     <ClCompile Include="History.cpp" />
     <ClCompile Include="Main.cpp" />
+    <ClCompile Include="Message.cpp" />
     <ClCompile Include="Users.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="Message.h" />
     <ClInclude Include="Users.h" />
     <ClInclude Include="History.h" />
     <ClInclude Include="Commands.h" />
