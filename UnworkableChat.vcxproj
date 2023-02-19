@@ -134,7 +134,6 @@
     <ClCompile Include="Users.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="Message.h" />
     <ClInclude Include="Users.h" />
     <ClInclude Include="History.h" />
     <ClInclude Include="Commands.h" />
