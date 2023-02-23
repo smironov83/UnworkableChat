@@ -24,6 +24,7 @@
     <ProjectGuid>{4863ff64-bfca-4aa2-a9b7-a570534477ec}</ProjectGuid>
     <RootNamespace>UnworkableChat</RootNamespace>
     <WindowsTargetPlatformVersion>10.0</WindowsTargetPlatformVersion>
+    <ProjectName>FW-11.8-UnworkableChat</ProjectName>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
@@ -127,15 +128,13 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="Commads.cpp" />
-    <ClCompile Include="History.cpp" />
+    <ClCompile Include="ChatBot.cpp" />
     <ClCompile Include="Main.cpp" />
-    <ClCompile Include="Users.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="ChatBot.h" />
+    <ClInclude Include="CommandModule.h" />
     <ClInclude Include="Users.h" />
-    <ClInclude Include="History.h" />
-    <ClInclude Include="Commands.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
