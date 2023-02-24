@@ -1,12 +1,10 @@
 #pragma once
-#include "Users.h"
-#include <vector>
+#include <iostream>
 
-class CommandModule :private Users
+class CommandModule 
 {
-	std::vector<Users>_users{};
+
 public:
-	//void registration();
-	//void logon();
-	//void logout();
+	auto LoginMenu();
+
 };

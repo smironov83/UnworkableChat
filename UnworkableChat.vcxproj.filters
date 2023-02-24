@@ -18,15 +18,15 @@
     <ClCompile Include="Main.cpp">
       <Filter>Файлы ресурсов</Filter>
     </ClCompile>
-    <ClCompile Include="ChatBot.cpp">
+    <ClCompile Include="Users.cpp">
+      <Filter>Исходные файлы</Filter>
+    </ClCompile>
+    <ClCompile Include="CommandModule.cpp">
       <Filter>Исходные файлы</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Users.h">
-      <Filter>Файлы заголовков</Filter>
-    </ClInclude>
-    <ClInclude Include="ChatBot.h">
       <Filter>Файлы заголовков</Filter>
     </ClInclude>
     <ClInclude Include="CommandModule.h">
