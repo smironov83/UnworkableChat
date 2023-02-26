@@ -1,6 +1,6 @@
 #include "Users.h"
 
-Users::Users(const std::string login, const std::string password, const std::string nickname, bool online) :
-	_login(login), _password(password), _nickname(nickname), _online(online) {};
-
+Users::Users(std::string login, std::string password, std::string name, bool online, History* history) :
+	_login(login), password_(password), _name(name), _online(online), history_(history) {};
+ 
 Users::~Users() {};

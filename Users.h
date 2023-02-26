@@ -1,13 +1,16 @@
 #pragma once
-#include <string>
+#include "History.h"
 
-class Users
+class Users :protected History<std::vector<std::string>>
 {
-	const std::string _login;
-	const std::string _password;
 public:
-	const std::string _nickname;
+	std::string _login;
+	std::string password_;
+	std::string _name;
 	bool _online = false;
-	Users(const std::string login, const std::string password, const std::string nickname, bool online);
+	History* history_;
+
+	Users(std::string login, std::string password, std::string name, bool online, History* history);
+	Users() = default;
 	~Users();
 };
