@@ -1,16 +1,17 @@
 #pragma once
-#include "History.h"
+#include <vector>
+#include <string>
 
-class Users :protected History<std::vector<std::string>>
+template <typename T1, typename T2>	class Users
 {
 public:
-	std::string _login;
-	std::string password_;
-	std::string _name;
-	bool _online = false;
-	History* history_;
+	T1 login_;
+	T1 password_;
+	T1 name_;
+	bool online_ = false;
+	T2 history_;
 
-	Users(std::string login, std::string password, std::string name, bool online, History* history);
+	Users(T1 login, T1 password, T1 name, bool online) :login_(login), password_(password), online_(online) {};
 	Users() = default;
-	~Users();
+	~Users() {};
 };

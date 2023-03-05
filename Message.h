@@ -1,13 +1,14 @@
 #pragma once
-#include "Users.h"
+#include "users.h"
 #include <time.h>
 
 struct Message
 {
-	std::string from_, to_, text_, timeStamp_;
+	std::string to_, text_, from_, timeStamp_;
 	
-	Message();
+	Message(std::string timeStamp, std::string from, std::string to, std::string text);
 	~Message();
 
-	auto timeStamp() -> std::string;
+	auto TimeStamp() -> std::string;
+	auto MessageConstructor() -> std::string;
 };
