@@ -133,17 +133,15 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="bad_range.cpp" />
-    <ClCompile Include="CommanModule.cpp" />
-    <ClCompile Include="Main.cpp" />
-    <ClCompile Include="Message.cpp" />
-    <ClCompile Include="Users.cpp" />
+    <ClCompile Include="comman_module.cpp" />
+    <ClCompile Include="main.cpp" />
+    <ClCompile Include="message.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="bad_range.h" />
-    <ClInclude Include="CommandModule.h" />
-    <ClInclude Include="History.h" />
-    <ClInclude Include="Message.h" />
-    <ClInclude Include="Users.h" />
+    <ClInclude Include="command_module.h" />
+    <ClInclude Include="message.h" />
+    <ClInclude Include="users.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

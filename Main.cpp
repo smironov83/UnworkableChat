@@ -1,25 +1,22 @@
 #include <stdlib.h>
-#include "CommandModule.h"
+#include "command_module.h"
 #include "vld.h"
 
 auto main() -> int
 {
 	system("chcp 1251");
 	system("cls");
-	
 	CommandModule unworkableChat;
 	unworkableChat.InitChatBot();
 	std::cout << "Добро пожаловать в Неработающий Чат!" << std::endl;
-	std::cout << unworkableChat.t.timeStamp() << std::endl;
-	while (!(unworkableChat.LoginMenu() == 3))
-	{
-		if (unworkableChat.LoginMenu() == 1)
+	while (unworkableChat.worksChat_)
+	{ 
+		unworkableChat.LoginMenu();
+		while (unworkableChat.worksUser_) 
 		{
-			while (!(unworkableChat.ChatMenu() == 4))
-			{
-
-			}
-		}
+			unworkableChat.PrintHistory();
+			unworkableChat.ChatMenu();
+		} 
 	}
 	return 0;
 }
