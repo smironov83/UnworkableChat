@@ -132,13 +132,11 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="bad_range.cpp" />
     <ClCompile Include="comman_module.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="message.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="bad_range.h" />
     <ClInclude Include="command_module.h" />
     <ClInclude Include="message.h" />
     <ClInclude Include="users.h" />
