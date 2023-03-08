@@ -310,8 +310,8 @@ void CommandModule::UserInfo()
 		std::cout << "Вы ввели неверный номер комманды. Пожалуйста, повторите ввод: "
 			<< std::endl;
 	}
-	std::cout << "Логин: " << &users_[--command].login_ << std::endl;
-	std::cout << "Имя: " << &users_[command].name_ << std::endl;
+	std::cout << "Логин: " << users_[--command].login_ << std::endl;
+	std::cout << "Имя: " << users_[command].name_ << std::endl;
 	if (users_[command].online_ == true) 
 	{ 
 		std::cout << "В сети: да" << std::endl; 
