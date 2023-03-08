@@ -1,23 +1,33 @@
 #include "command_module.h"
 
+//Конструктор/деструктор
+
 CommandModule::CommandModule() {}
 CommandModule::~CommandModule() {}
+
+//Меню входа. Обрабатывает ввод номера команды, ввод посторонних символов не
+//принимается. Предлагает войти в чат, зарегистрироваться в чате, выйти из 
+//программы. Возвращает значение true для main - программа запущена.
+//При вводе команды выхода - возвращает false и цикл в main завершается
+//с последующим завершением работы программы.
 
 auto CommandModule::LoginMenu()->bool
 {
 	std::cout << std::endl;
-	size_t commandNumber = NULL;
-	std::cout << "Для продолжения работы введите номер комманды:" << std::endl;
+	size_t command = NULL;
+	std::cout << "Для продолжения работы введите номер команды:" << std::endl;
 	std::cout << "1 - войти в чат" << std::endl;
 	std::cout << "2 - зарегистрироваться в чате:" << std::endl;
 	std::cout << "3 - выйти из программы" << std::endl;
-	while (!(std::cin >> commandNumber) || (std::cin.peek() != '\n') || !(commandNumber == 1 || commandNumber == 2 || commandNumber == 3))
+	while (!(std::cin >> command) || (std::cin.peek() != '\n') || !(command == 1 
+		|| command == 2 || command == 3))
 	{
 		std::cin.clear();
 		while (std::cin.get() != '\n');
-		std::cout << "Вы ввели неверный номер комманды. Пожалуйста, повторите ввод: " << std::endl;
+		std::cout << "Вы ввели неверный номер команды. Пожалуйста, повторите ввод: "
+			<< std::endl;
 	}
-	switch (commandNumber)
+	switch (command)
 	{
 	case 1:
 		users_[currentUser_].online_ = LogIn();
@@ -27,19 +37,39 @@ auto CommandModule::LoginMenu()->bool
 		Registration();
 		break;
 	case 3:
-		std::cout << std::endl << "Очень жаль, что Вы покидаете Неработающий Чат! Ждём Вашего возвращения!" << std::endl;
+		std::cout << std::endl << 
+			"Очень жаль, что Вы покидаете Неработающий Чат! Ждём Вашего возвращения!"
+			<< std::endl;
 		worksChat_ = false;
 		break;
 	}
 	return worksChat_;
 }
 
+//Регистрирует ChatBot'а. Авторизует его в чате со статусом online.
+// Инициализирует словарный запас бота.
+
 void CommandModule::InitChatBot()
 {
-	user_ = new Users<std::string, std::vector<std::string>>{ "ChatBot", "qwerty", "Bot", true };
+	user_ = new Users<std::string, std::vector<std::string>>{ "ChatBot", "qwerty"
+		, "Bot", true };
 	users_.push_back(*user_);
+	chatBotAnswers_ = { "Здесь кто-то есть?",
+		"Совершенно верно! Мои мысли ушли в том же направлении!",
+		"В этом и заключался мой коварный замысел!",
+		"А в это время в Африке дети голодают!",
+		"А у меня есть котик! Неправда ли чудесное животное?",
+		"Ну и кто Вы после этого?",
+		"А я - Великий и Ужасный ChatBot этого Неработающего чата!",
+		"Я Вас не понимаю!",
+		"Я не говорю по-русски!" };
 	delete user_;
 }
+
+//Регистрирует нового пользователя. Ввод данных: логин, пароль и имя.
+//Проверяет логин на уникальность по всем зарегистрированным пользователям.
+//Слово "exit" исключено из возможных значений логина, т.к. зарезервировано
+//для выхода из меню входа в чат.
 
 void CommandModule::Registration() 
 {
@@ -53,7 +83,7 @@ void CommandModule::Registration()
 		unique = true;
 		for (auto& user : users_)
 		{
-			if (user_->login_ == user.login_)
+			if ((user_->login_ == user.login_) || (user_->login_ == "exit"))
 			{
 				unique = false;
 				std::cout << "Логин занят. Введите другой логин: ";
@@ -66,15 +96,25 @@ void CommandModule::Registration()
 	std::cin >> user_->name_;
 	user_->online_ = false;
 	users_.push_back(*user_);
-	std::cout << "Регистрация успешно завершена. Для продолжения работы войдите в Неработающий Чат под Вашими учетными данными!" << std::endl;
+	std::cout << "Регистрация успешно завершена. Для продолжения работы войдите "
+		"в Неработающий Чат под Вашими учетными данными!" << std::endl;
 	delete user_;
 }
+
+//Авторизирует пользователя по связке логин/пароль, сверяет по массиву
+//зарегистрированных пользователей. Предусмотрен выход в предыдущее меню
+//по ключевому слову "exit" на случай, если пользователь забыл учетные данные.
+//Возвращает значение "true" для сетевого статуса пользователя и статуса 
+//входа авторизованного пользователя в чат для main. Фиксирует значение индекса
+//элемента массива, в котором хранятся данные пользователя, выполнившего вход в
+// чат.
 
 auto CommandModule::LogIn() -> bool
 {
 	std::cout << std::endl;
 	user_ = new Users<std::string, std::vector<std::string>>{};
-	std::cout << "Для входа в Неработающий Чат введите Ваши учетные данные!" << std::endl;
+	std::cout << "Для входа в Неработающий Чат введите Ваши учетные данные!" 
+		<< std::endl;
 	auto unique = true;
 	auto online = true;
 	do
@@ -93,7 +133,8 @@ auto CommandModule::LogIn() -> bool
 				}
 				if (unique && (counter == users_.size() - 1)&&(user_->login_!="exit"))
 				{ 
-					std::cout << "Логин не зарегистрирован. Повторите ввод или введите exit для возврата в предыдущее меню." << std::endl;
+					std::cout << "Логин не зарегистрирован. Повторите ввод или введите "
+						"exit для возврата в предыдущее меню." << std::endl;
 				}
 				if (user_->login_ == "exit") 
 				{
@@ -109,7 +150,8 @@ auto CommandModule::LogIn() -> bool
 			std::cin >> user_->password_;
 			if (user_->password_ != users_[currentUser_].password_)
 			{
-				std::cout << "Пароль неверный. Повторите ввод логина и пароля!" << std::endl;
+				std::cout << "Пароль неверный. Повторите ввод логина и пароля!" 
+					<< std::endl;
 				unique = true;
 			}
 		}
@@ -117,6 +159,14 @@ auto CommandModule::LogIn() -> bool
 	delete user_;
 	return online;
 }
+
+//Меню чата. Обрабатывает ввод номера команды, ввод посторонних символов не
+//принимается. Предлагает написать сообщение всем пользователям, выбранному 
+//пользователю (личное сообщение), просмотреть профиль выбранного 
+//пользователя, либо выйти из аккаунта. Возвращает значение true для main -
+//пользователь авторизован, работает вложенный цикл.
+//При вводе команды выхода - возвращает false и вложенный цикл в main 
+//завершается с последующим возвратом в меню входа.
 
 auto CommandModule::ChatMenu() -> bool
 {
@@ -126,11 +176,13 @@ auto CommandModule::ChatMenu() -> bool
 	std::cout << "2 - написать выбранному пользователю:" << std::endl;
 	std::cout << "3 - просмотреть профиль выбранного пользователя" << std::endl;
 	std::cout << "4 - выйти из чата" << std::endl;
-	while (!(std::cin >> command) || (std::cin.peek() != '\n') || !(command == 1 || command == 2 || command == 3 || command == 4))
+	while (!(std::cin >> command) || (std::cin.peek() != '\n') || !(command == 1
+		|| command == 2 || command == 3 || command == 4))
 	{
 		std::cin.clear();
 		while (std::cin.get() != '\n');
-		std::cout << "Вы ввели неверный номер комманды. Пожалуйста, повторите ввод: " << std::endl;
+		std::cout << "Вы ввели неверный номер комманды. Пожалуйста, повторите ввод: "
+			<< std::endl;
 	}
 	switch (command)
 	{
@@ -153,45 +205,78 @@ auto CommandModule::ChatMenu() -> bool
 	return worksUser_;
 }
 
+//Команда отправляет сообщение всем. Сообщение сохраняется у всех 
+//зарегистрированных пользователей. Сообщение видит ChatBot и реагирует на 
+//него.
+
 void CommandModule::MessageToAll()
 {
 	std::cout << "[" << users_[currentUser_].login_ << "]" << " -> "<<"[All] : ";
 	std::string text;
 	std::cin.ignore();
 	std::getline(std::cin, text);
-	message_ = new Message{ message_->TimeStamp(), users_[currentUser_].login_, "All", text };
-	for (auto& user : users_) { user.history_.push_back(message_->MessageConstructor()); }
+	message_ = new Message{ message_->TimeStamp(), users_[currentUser_].login_, 
+		"All", text };
+	for (auto& user : users_) 
+	{ 
+		user.history_.push_back(message_->MessageConstructor()); 
+	}
 	delete message_;
 	AnswerChatBot();
 }
 
+//Выводит всю историю переписки для текущего пользователя.
+
 void CommandModule::PrintHistory()
 {
 	system("cls");
-	for (auto& user : users_[currentUser_].history_) { std::cout << user << std::endl; };
+	for (auto& user : users_[currentUser_].history_) 
+	{ 
+		std::cout << user << std::endl; 
+	};
 }
+
+//Отправляет сообщение выбранному пользователю. После выбора команды предлагает
+//выбрать получателя, путем вывода списка всех зарегистрированных 
+//пользователей, путем ввода номера пользователя. Реализована обработка ввода,
+//исключающая обращение к несуществующему элементу массива. Сохраняет историю
+//для текущего пользователя и для получателя. Остальные пользователи не видят
+//этого сообщения. ChatBot видит сообщение и реагирует на него, только если
+//является получателем. Можно отправить личное сообщение самому себе, при этом
+//история сохраняется только для текущего пользователя.
 
 void CommandModule::MessageToUser()
 {
 	PrintUsers();
-	std::cout << "Введите номер пользователя, которому Вы хотите отправить сообщение: ";
+	std::cout << 
+		"Введите номер пользователя, которому Вы хотите отправить сообщение: ";
 	size_t command = 0;
-	while (!(std::cin >> command) || (std::cin.peek() != '\n') || (command == 0) || !(command < users_.size() + 1))
+	while (!(std::cin >> command) || (std::cin.peek() != '\n') || (command == 0) 
+		|| !(command < users_.size() + 1))
 	{
 		std::cin.clear();
 		while (std::cin.get() != '\n');
-		std::cout << "Вы ввели неверный номер комманды. Пожалуйста, повторите ввод: " << std::endl;
+		std::cout << "Вы ввели неверный номер комманды. Пожалуйста, повторите ввод: "
+			<< std::endl;
 	}
-	std::cout << "[" << users_[currentUser_].login_ << "]" << " -> " << "[" << users_[--command].login_ << "]" << " : ";
+	std::cout << "[" << users_[currentUser_].login_ << "]" << " -> " << "[" << 
+		users_[--command].login_ << "]" << " : ";
 	std::string text;
 	std::cin.ignore();
 	std::getline(std::cin, text);
-	message_ = new Message{ message_->TimeStamp(), users_[currentUser_].login_, users_[command].login_, text};
+	message_ = new Message{ message_->TimeStamp(), users_[currentUser_].login_, 
+		users_[command].login_, text};
 	users_[currentUser_].history_.push_back(message_->MessageConstructor());
-	if (command != currentUser_) { users_[command].history_.push_back(message_->MessageConstructor()); }
+	if (command != currentUser_) 
+	{ 
+		users_[command].history_.push_back(message_->MessageConstructor()); 
+	}
 	delete message_;
 	if (users_[command].login_ == "ChatBot") { AnswerChatBot(); }
 }
+
+//Выводит на экран всех зарегистрированных пользователей с присвоением 
+//порядкового номера.
 
 void CommandModule::PrintUsers() 
 {
@@ -206,60 +291,63 @@ void CommandModule::PrintUsers()
 	}
 }
 
+//Предлагает просмотреть профиль выбранного пользователя путем ввода 
+//порядкового пользователя из выведенного списка. Реализована обработка ввода,
+//исключающая обращение к несуществующему элементу массива. Выводит логин, имя 
+//и текущий сетевой статус пользователя.
+
 void CommandModule::UserInfo()
 {
 	PrintUsers();
-	std::cout << "Введите номер пользователя, профиль которого Вы хотите посмотреть: ";
+	std::cout << 
+		"Введите номер пользователя, профиль которого Вы хотите посмотреть: ";
 	size_t command = 0;
-	while (!(std::cin >> command) || (std::cin.peek() != '\n') || (command == 0) || !(command < users_.size() + 1))
+	while (!(std::cin >> command) || (std::cin.peek() != '\n') || (command == 0) 
+		|| !(command < users_.size() + 1))
 	{
 		std::cin.clear();
 		while (std::cin.get() != '\n');
-		std::cout << "Вы ввели неверный номер комманды. Пожалуйста, повторите ввод: " << std::endl;
+		std::cout << "Вы ввели неверный номер комманды. Пожалуйста, повторите ввод: "
+			<< std::endl;
 	}
-	std::cout << "Логин: " << users_[--command].login_ << std::endl;
-	std::cout << "Имя: " << users_[command].name_ << std::endl;
-	if (users_[command].online_ == true) { std::cout << "В сети: да" << std::endl; }
+	std::cout << "Логин: " << &users_[--command].login_ << std::endl;
+	std::cout << "Имя: " << &users_[command].name_ << std::endl;
+	if (users_[command].online_ == true) 
+	{ 
+		std::cout << "В сети: да" << std::endl; 
+	}
 	else { std::cout << "В сети: нет" << std::endl; }
 	std::cout << std::endl;
 	system("pause");
 }
 
+//Реализует реакцию ChatBot'а на появление новых сообщений. ChatBot отвечает
+//на любое новое сообщение в зоне его видимости личным сообщением отправителю.
+//Текст сообщения - случайный, из списка фраз массива ответов ChatBot'а.
+//Включена обработка исключений, на случай изменения количества фраз в массиве
+//без изменения диапазона случайных чисел. Возможна альтернативная, более 
+//безопасная реализация, например 
+//size_t answer = rand() % chatBotAnswers_.size();
+//В данном случае - демонстрация навыков работы с исключениями.
+//Ответ ChatBot'а сохраняется у получателя и отправителя.
+
 void CommandModule::AnswerChatBot()
 {
 	size_t answer = rand() % 9;
 	std::string text;
-	switch (answer)
+	
+	try
 	{
-	case 0:
-		text = "Здесь кто-то есть?";
-		break;
-	case 1:
-		text = "Совершенно верно! Мои мысли ушли в том же направлении!";
-		break;
-	case 2:
-		text = "В этом и заключался мой коварный замысел!";
-		break;
-	case 3:
-		text = "А в это время в Африке дети голодают!";
-		break; 
-	case 4:
-		text = "А у меня есть котик! Неправда ли чудесное животное?";
-		break; 
-	case 5:
-		text = "Ну и кто Вы после этого?";
-		break; 
-	case 6:
-		text = "А я - Великий и Ужасный ChatBot этого Неработающего чата!";
-		break; 
-	case 7:
-		text = "Я Вас не понимаю!";
-		break; 
-	case 8:
-		text = "Я не говорю по-русски!";
-		break; 
+		if (answer >= chatBotAnswers_.size()) { throw bad_range(); }
+		else { text = chatBotAnswers_[answer]; }
 	}
-	message_ = new Message{ message_->TimeStamp(), users_[0].login_, users_[currentUser_].login_, text };
+	catch (bad_range& bR) 
+	{ 
+		std::cout << bR.what() << std::endl; 
+		system("pause");
+	}
+	message_ = new Message{ message_->TimeStamp(), users_[0].login_, 
+		users_[currentUser_].login_, text };
 	users_[currentUser_].history_.push_back(message_->MessageConstructor());
 	users_[0].history_.push_back(message_->MessageConstructor());
 	delete message_;

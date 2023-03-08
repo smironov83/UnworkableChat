@@ -137,6 +137,7 @@
     <ClCompile Include="message.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="bad_range.h" />
     <ClInclude Include="command_module.h" />
     <ClInclude Include="message.h" />
     <ClInclude Include="users.h" />

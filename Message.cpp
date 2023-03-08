@@ -1,11 +1,20 @@
 #include "message.h"
 
-Message::Message(std::string timeStamp, std::string from, std::string to, std::string text) :
-    timeStamp_(timeStamp), from_(from), to_(to), text_(text) {}
+//Конструктор принимает параметры: текущее системное время, логин отправителя,
+//идентификатор получателя, текст сообщения
+
+Message::Message(std::string const timeStamp, std::string const from,
+  std::string const to, std::string const text) : timeStamp_(timeStamp), 
+  from_(from), to_(to), text_(text) {}
+
+//Деструктор
 
 Message::~Message() {}
 
-auto Message::TimeStamp() -> std::string
+//Получает текущее системное время, переформатирует в понятный обычному 
+// пользователю вид и возвращает полученное значение в формате string
+
+auto Message::TimeStamp() -> std::string const
 {
     const size_t range = 26;
     time_t timeLong = NULL;
@@ -19,8 +28,12 @@ auto Message::TimeStamp() -> std::string
 	return timeNow;
 }
 
-auto Message::MessageConstructor() -> std::string
+//Объединяет с форматированием входные переменные и возвращает единой строкой.
+
+
+auto Message::MessageConstructor() -> std::string const
 {
-    std::string message = timeStamp_ + " " + from_ + " to " + to_ + " : " + text_;
+    std::string const message = timeStamp_ + " " + from_ + " to " + to_ + 
+      " : " + text_;
     return message;
 }
