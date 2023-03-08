@@ -8,9 +8,8 @@
 
 struct bad_range :public std::exception
 {
-	
 	virtual const char* what() const noexcept override
 	{
-		return "ERROR: !!!¬ыход за пределы словарного запаса ChatBot'а!!!";
+		return "ERROR:!!!¬ыход за пределы словарного запаса ChatBot'а!!!";
 	}
 };

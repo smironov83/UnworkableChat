@@ -11,6 +11,7 @@ auto main() -> int
 {
 	system("chcp 1251");
 	system("cls");
+	srand(time(0)); //Делает рандом рандомным
 	CommandModule unworkableChat;
 	unworkableChat.InitChatBot();
 	std::cout << "Добро пожаловать в Неработающий Чат!" << std::endl;

@@ -250,7 +250,7 @@ void CommandModule::MessageToUser()
 	PrintUsers();
 	std::cout << 
 		"Введите номер пользователя, которому Вы хотите отправить сообщение: ";
-	size_t command = 0;
+	size_t command = 0;//Номер пользователя (от 1 до users_.size() включительно, в векторе users_ (номер - 1)
 	while (!(std::cin >> command) || (std::cin.peek() != '\n') || (command == 0) 
 		|| !(command < users_.size() + 1))
 	{
@@ -260,7 +260,7 @@ void CommandModule::MessageToUser()
 			<< std::endl;
 	}
 	std::cout << "[" << users_[currentUser_].login_ << "]" << " -> " << "[" << 
-		users_[--command].login_ << "]" << " : ";
+		users_[--command].login_ << "]" << " : "; //номер - 1 и получаем имя пользователя.
 	std::string text;
 	std::cin.ignore();
 	std::getline(std::cin, text);
@@ -285,8 +285,7 @@ void CommandModule::PrintUsers()
 	{
 		++counter;
 		std::cout << counter << " - " << user.login_;
-		if (user.online_) { std::cout << " (online) "; }
-		else { std::cout << " (offline) "; }
+		std::cout << (user.online_ ? " (online) " : " (offline) ");
 		std::cout << std::endl;
 	}
 }
@@ -310,13 +309,9 @@ void CommandModule::UserInfo()
 		std::cout << "Вы ввели неверный номер комманды. Пожалуйста, повторите ввод: "
 			<< std::endl;
 	}
-	std::cout << "Логин: " << &users_[--command].login_ << std::endl;
-	std::cout << "Имя: " << &users_[command].name_ << std::endl;
-	if (users_[command].online_ == true) 
-	{ 
-		std::cout << "В сети: да" << std::endl; 
-	}
-	else { std::cout << "В сети: нет" << std::endl; }
+	std::cout << "Логин: " << users_[--command].login_ << std::endl;
+	std::cout << "Имя: " << users_[command].name_ << std::endl;
+	std::cout << (users_[command].online_ == true ? "В сети: да" : "В сети: нет") << std::endl;
 	std::cout << std::endl;
 	system("pause");
 }
